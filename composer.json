@@ -1,5 +1,5 @@
 {
-  "name": "3xw/cakephp-cache",
+  "name": "awallef/cakephp-cache",
   "description": "CakePHP render caching",
   "type": "cakephp-plugin",
   "require": {
