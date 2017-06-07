@@ -31,7 +31,7 @@ in config folder create a cache.php file with as exemple:
 			  'compress' => true, // default: false, can be a fct($request)
 			  //'key' => 'whatEver',// default is fct($request) => return $request->here()
 			  'method' => ['GET'],
-			  'code' => '200',
+			  'code' => '200', // must be set or '*' !!!!!
 			  'prefix' => '*',
 			  'plugin' => '*',
 			  'controller' => '*',

@@ -39,9 +39,9 @@ class ResponseCacheMiddleware
   {
     $rule = $this->_checkRules($request, $response);
     if($rule){
-      if($rule['clear']){
+      if($rule['clear'] && !$rule['skip']){
         Cache::delete($rule['key'], $rule['cache']);
-      }else{
+      }else if(!$rule['clear'] && !$rule['skip']){
         Cache::write($rule['key'], $response->body(), $rule['cache']);
       }
     }
@@ -98,9 +98,7 @@ class ResponseCacheMiddleware
       foreach($rule as $key => &$value){
         $value = $this->_getRuleBoolProperty($request, $rule, $key);
       }
-      if(!$rule['skip']){
-        return $rule;
-      }
+      return $rule;
     }
     return null;
   }
