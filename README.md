@@ -11,7 +11,7 @@ The recommended way to install composer packages is:
 
 Load it in your config/boostrap.php
 
-	Plugin::load('Cache');
+	Plugin::load('Trois/Cache');
 
 ## Cache Settings
 in config folder create a cache.php file with as exemple:
@@ -31,7 +31,7 @@ in config folder create a cache.php file with as exemple:
 			  'compress' => true, // default: false, can be a fct($request)
 			  //'key' => 'whatEver',// default is fct($request) => return $request->here()
 			  'method' => ['GET'],
-			  //'code' => '200',
+			  'code' => '200',
 			  'prefix' => '*',
 			  'plugin' => '*',
 			  'controller' => '*',
@@ -41,12 +41,12 @@ in config folder create a cache.php file with as exemple:
 
 			// clear request
 			[
-			  'cache' => 'default', // default: 'default'
+			  'cache' => 'html', // default: 'default'
 			  'skip' => false, // default: false
 			  'clear' => true, // default: false,
 			  'key' => '*',
 			  'method' => ['POST','PUT','DELETE'],
-			  //'code' => ['200','201','202'],
+			  'code' => ['200','201','202'],
 			  'prefix' => '*',
 			  'plugin' => '*',
 			  'controller' => ['Users','Pages'],
@@ -61,35 +61,20 @@ in your src/Application.php file add the middleware as last chain block.
 
 	<?php
 	namespace App;
-	
-	use Cake\Core\Configure;
-	use Cake\Error\Middleware\ErrorHandlerMiddleware;
-	use Cake\Http\BaseApplication;
-	use Cake\Routing\Middleware\AssetMiddleware;
-	use Cake\Routing\Middleware\RoutingMiddleware;
-	use Trois\Middleware\ResponseCacheMiddleware;
+	...	
+	use Trois\Cache\Middleware\ResponseCacheMiddleware;
 	
 	class Application extends BaseApplication
 	{
+	    public function middleware($middleware)
+	    {
+	        $middleware
+				...
+	            // Apply Response caching
+	            ->add(ResponseCacheMiddleware::class);
 	
-	  public function middleware($middleware)
-	  {
-	    $middleware
-	    // Catch any exceptions in the lower layers,
-	    // and make an error page/response
-	    ->add(ErrorHandlerMiddleware::class)
-	
-	    // Handle plugin/theme assets like CakePHP normally does.
-	    ->add(AssetMiddleware::class)
-	
-	    // Apply routing
-	    ->add(RoutingMiddleware::class)
-	
-	    // Apply Response caching
-	    ->add(ResponseCacheMiddleware::class);
-	
-	    return $middleware;
-	  }
+	        return $middleware;
+	    }
 	}
 
 ## Redis caching
