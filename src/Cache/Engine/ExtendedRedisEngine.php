@@ -1,6 +1,6 @@
 <?php
 
-namespace Trois\Cache\Engine;
+namespace Trois\Cache\Cache\Engine;
 use Cake\Cache\Engine\RedisEngine;
 
 class ExtendedRedisEngine extends RedisEngine
