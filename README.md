@@ -90,7 +90,7 @@ Configure the engine in app.php like follow:
 	'Cache' => [ 
 	    ...
 	    'html' => [
-	      'className' => 'Cache.ExtendedRedis',
+	      'className' => 'Trois/Cache.ExtendedRedis',
 	      'prefix' => 'www.your-site.com:',
 	      'duration' => '+24 hours',
 	      'serialize' => false
