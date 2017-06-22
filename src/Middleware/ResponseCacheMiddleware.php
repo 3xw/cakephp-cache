@@ -40,9 +40,21 @@ class ResponseCacheMiddleware
     $rule = $this->_checkRules($request, $response);
     if($rule){
       if($rule['clear'] && !$rule['skip']){
-        Cache::delete($rule['key'], $rule['cache']);
+        if(is_array($rule['key'])){
+          foreach($rule['key'] as $key){
+            Cache::delete($key, $rule['cache']);
+          }
+        }else{
+          Cache::delete($rule['key'], $rule['cache']);
+        }
       }else if(!$rule['clear'] && !$rule['skip']){
-        Cache::write($rule['key'], $response->body(), $rule['cache']);
+        if(is_array($rule['key'])){
+          foreach($rule['key'] as $key){
+            Cache::write($key, $response->body(), $rule['cache']);
+          }
+        }else{
+          Cache::write($rule['key'], $response->body(), $rule['cache']);
+        }
       }
     }
   }
