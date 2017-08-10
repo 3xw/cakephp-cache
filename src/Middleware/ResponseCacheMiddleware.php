@@ -46,7 +46,7 @@ class ResponseCacheMiddleware
   public function checkRules($request, $response)
   {
     $this->_init();
-    return _checkRules($request, $response);
+    return $this->_checkRules($request, $response);
   }
 
   protected function _execRule($request, $response)
