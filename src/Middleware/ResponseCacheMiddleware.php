@@ -21,7 +21,7 @@ class ResponseCacheMiddleware
 
   protected function _init()
   {
-    if(empty(Configure::read('Trois.cache.settings')) && empty(Configure::read('Trois.cache.rules')))
+    if(empty(Configure::read('Awallef.cache.settings')) && empty(Configure::read('Awallef.cache.rules')))
     {
       $key = 'cache';
       try {
@@ -30,8 +30,8 @@ class ResponseCacheMiddleware
         throw new Exception(__('Missing configuration file: "config/{0}.php"!!!', $key), 1);
       }
     }
-    $this->config('settings', Configure::read('Trois.cache.settings'));
-    $this->config('rules', Configure::read('Trois.cache.rules'));
+    $this->config('settings', Configure::read('Awallef.cache.settings'));
+    $this->config('rules', Configure::read('Awallef.cache.rules'));
   }
 
   public function __invoke($request, $response, $next)

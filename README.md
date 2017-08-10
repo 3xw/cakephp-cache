@@ -18,10 +18,10 @@ in config folder create a cache.php file with as exemple:
 
 	<?php
 	return [
-  		'Trois.cache.settings' => [
+  		'Awallef.cache.settings' => [
     		'default' => 'default', // default cache config to use if not set in rules...
   		],
-		'Trois.cache.rules' => [
+		'Awallef.cache.rules' => [
 
 			// cache request
 			[
@@ -105,10 +105,10 @@ Configure the engine in app.php like follow:
 Configure cache.php like follow:
 
 	return [
-			'Trois.cache.settings' => [
+			'Awallef.cache.settings' => [
 				'default' => 'redis', // default cache config to use if not set in rules...
 			],
-		'Trois.cache.rules' => [
+		'Awallef.cache.rules' => [
 
 			// cache request
 			[
