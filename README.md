@@ -81,7 +81,7 @@ This will create or delete view renders as cache ( html/json /etc...)
 ## Retrieve cache via ActionCacheComponent
 in your AppController load the component AFTER Auth!!
 
-	$this->loadComponent('ActionCache');
+	$this->loadComponent('Awallef/Cache.ActionCache');
 
 ## Retrieve cache via Nginx
 First install nginx redis extension. Then set your cache config to store in redis. You can use my plugin...
