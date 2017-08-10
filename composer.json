@@ -11,12 +11,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Trois\\Cache\\": "src"
+      "Awallef\\Cache\\": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Trois\\Cache\\Test\\": "tests",
+      "Awallef\\Cache\\Test\\": "tests",
       "Cake\\Test\\": "./vendor/cakephp/cakephp/tests"
     }
   }

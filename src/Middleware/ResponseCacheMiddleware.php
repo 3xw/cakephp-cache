@@ -1,5 +1,5 @@
 <?
-namespace Trois\Cache\Middleware;
+namespace Awallef\Cache\Middleware;
 
 use Cake\Cache\Cache;
 use Cake\Log\Log;
@@ -19,20 +19,34 @@ class ResponseCacheMiddleware
       'rules' => [],
   ];
 
+  protected function _init()
+  {
+    if(empty(Configure::read('Trois.cache.settings')) && empty(Configure::read('Trois.cache.rules')))
+    {
+      $key = 'cache';
+      try {
+        Configure::load($key, 'default');
+      } catch (Exception $ex) {
+        throw new Exception(__('Missing configuration file: "config/{0}.php"!!!', $key), 1);
+      }
+    }
+    $this->config('settings', Configure::read('Trois.cache.settings'));
+    $this->config('rules', Configure::read('Trois.cache.rules'));
+  }
+
   public function __invoke($request, $response, $next)
   {
     $response = $next($request, $response);
-    $key = 'cache';
-    try {
-      Configure::load($key, 'default');
-      $this->config('settings', Configure::read('Trois.cache.settings'));
-      $this->config('rules', Configure::read('Trois.cache.rules'));
-    } catch (Exception $ex) {
-      throw new Exception(__('Missing configuration file: "config/{0}.php"!!!', $key), 1);
-    }
+    $this->_init();
     $this->_execRule($request, $response);
 
     return $response;
+  }
+
+  public function checkRules($request, $response)
+  {
+    $this->_init();
+    return _checkRules($request, $response);
   }
 
   protected function _execRule($request, $response)
