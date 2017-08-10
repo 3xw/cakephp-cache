@@ -2,6 +2,7 @@
 namespace Awallef\Cache\Controller\Component;
 
 use Awallef\Cache\Middleware\ResponseCacheMiddleware;
+use Cake\Cache\Cache;
 use Cake\Http\Response;
 use Cake\Event\Event;
 use Cake\Controller\ComponentRegistry;
