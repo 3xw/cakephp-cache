@@ -6,7 +6,7 @@ use Cake\Log\Log;
 use Cake\Core\InstanceConfigTrait;
 use Cake\Core\Configure;
 use Cake\Core\Exception\Exception;
-//use Cake\Network\Request;
+use Awallef\Cache\Utility\Compressor;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
 
@@ -20,6 +20,8 @@ class ResponseCacheMiddleware
   ];
 
   protected $_ruleKey = -1;
+
+  protected $_compressor;
 
   protected function _init()
   {
@@ -92,9 +94,15 @@ class ResponseCacheMiddleware
     Cache::write($key, $content, $rule['cache']);
   }
 
-  protected function _compress($out)
+  protected function compressor()
   {
-    return preg_replace(array('/<!--(.*)-->/Uis',"/[[:blank:]]+/"),array('',' '),str_replace(array("\n","\r","\t"),'',$out));
+    return (!$this->_compressor)? $this->_compressor = new Compressor(): $this->_compressor;
+  }
+
+  protected function _compress($content)
+  {
+    //return preg_replace(array('/<!--(.*)-->/Uis',"/[[:blank:]]+/"),array('',' '),str_replace(array("\n","\r","\t"),'',$content));
+    return $this->compressor()->compress($content);
   }
 
   protected function _checkRules($request, $response)
