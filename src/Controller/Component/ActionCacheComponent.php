@@ -42,7 +42,10 @@ class ActionCacheComponent extends Component
       // no cache found
       if(empty($body)) return true;
 
-      // cache found !
+      // cache found ! do not re write it..
+      $rcm->deleteMatchedRule();
+
+      // serve cache
       $response->body($body);
       return $response;
     }

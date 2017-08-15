@@ -19,6 +19,8 @@ class ResponseCacheMiddleware
       'rules' => [],
   ];
 
+  protected $_ruleKey = -1;
+
   protected function _init()
   {
     if(empty(Configure::read('Awallef.cache.settings')) && empty(Configure::read('Awallef.cache.rules')))
@@ -49,6 +51,17 @@ class ResponseCacheMiddleware
     return $this->_checkRules($request, $response);
   }
 
+  public function deleteMatchedRule()
+  {
+    if($this->_ruleKey !== -1)
+    {
+      $rules = Configure::read('Awallef.cache.rules');
+      unset($rules[$this->_ruleKey]);
+      Configure::write('Awallef.cache.rules', $rules);
+    }
+    return false;
+  }
+
   protected function _execRule($request, $response)
   {
     $rule = $this->_checkRules($request, $response);
@@ -64,13 +77,19 @@ class ResponseCacheMiddleware
       }else if(!$rule['clear'] && !$rule['skip']){
         if(is_array($rule['key'])){
           foreach($rule['key'] as $key){
-            Cache::write($key, $response->body(), $rule['cache']);
+            $this->_writeCache($key, $response->body(), $rule);
           }
         }else{
-          Cache::write($rule['key'], $response->body(), $rule['cache']);
+          $this->_writeCache($rule['key'], $response->body(), $rule);
         }
       }
     }
+  }
+
+  protected function _writeCache($key, $content, $rule)
+  {
+    $content = ($rule['compress'])? $this->_compress($content): $content;
+    Cache::write($key, $content, $rule['cache']);
   }
 
   protected function _compress($out)
@@ -81,9 +100,10 @@ class ResponseCacheMiddleware
   protected function _checkRules($request, $response)
   {
     $rules = $this->config('rules');
-    foreach ($rules as $rule) {
+    foreach ($rules as $key => $rule) {
       $rule = $this->_matchRule($rule, $request, $response);
       if ($rule !== null) {
+        $this->_ruleKey = $key;
         return $rule;
       }
     }
