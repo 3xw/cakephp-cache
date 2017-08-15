@@ -13,7 +13,7 @@ Load it in your config/boostrap.php
 
 	Plugin::load('Awallef/Cache');
 
-## How it work
+## How it works
 A middleware creates cache response as you want using app.php cache engines. Then you have two options to retrieve:
 
 - A component retrieve the cached response before your action is called, but after auth and whatever you need.
