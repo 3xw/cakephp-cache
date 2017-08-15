@@ -13,8 +13,15 @@ Load it in your config/boostrap.php
 
 	Plugin::load('Awallef/Cache');
 
+## How it work
+A middleware creates cache response as you want using app.php cache engines. Then you have two options to retrieve:
+
+- A component retrieve the cached response before your action is called, but after auth and whatever you need.
+- You retrieve the cache response server side with Nginx or any other binary
+
 ## Cache Settings
-in config folder create a cache.php file with as exemple:
+With a config file you can tell your app when to cache and when to clear cache.
+In config folder create a cache.php file with as exemple:
 
 	<?php
 	return [
@@ -46,7 +53,7 @@ in config folder create a cache.php file with as exemple:
 			  'clear' => true, // default: false,
 			  'key' => '*', // * => Cache::clear(false, cache) (Will clear all keys), 'whatEver' => Cache::delete('whatEver', cache), null => Cache::delete($request->here(), cache)
 			  'method' => ['POST','PUT','DELETE'],
-			  'code' => ['200','201','202'],
+			  'code' => ['200','201','202','302'], // 302 is often triggered by cakephp in case of success crud operation...
 			  'prefix' => '*',
 			  'plugin' => '*',
 			  'controller' => ['Users','Pages'],
@@ -82,6 +89,13 @@ This will create or delete view renders as cache ( html/json /etc...)
 in your AppController load the component AFTER Auth!!
 
 	$this->loadComponent('Awallef/Cache.ActionCache');
+	// normal settings
+
+	// OR
+
+	$this->loadComponent('Awallef/Cache.ActionCache',['skip_debug' => false]);
+	// skip_debug default is true
+	// so here it means cache is deliver even if you are in debug mode....
 
 ## Retrieve cache via Nginx
 First install nginx redis extension. Then set your cache config to store in redis. You can use my plugin...
@@ -114,7 +128,7 @@ Configure cache.php like follow:
 			[
 				'skip' => false, // default: false, can be a fct($request)
 				'clear' => false, // default: false, can be a fct($request)
-				'compress' => true, // default: false, can be a fct($request)
+				'compress' => true, // default: true, can be a fct($request)
 				//'key' => 'whatEver',// default is fct($request) => return $request->here()
 				'method' => ['GET'],
 				'code' => '200', // must be set or '*' !!!!!
