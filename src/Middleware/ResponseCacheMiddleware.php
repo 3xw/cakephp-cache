@@ -162,7 +162,20 @@ class ResponseCacheMiddleware
     $prop = $rule[$key];
     if ($prop === null) {
       //clear will be true by default
-      return ($key == 'cache')? $this->config('settings')['default']: (($key == 'key')? $request->here():false);
+      switch($key)
+      {
+        case 'cache':
+          return $this->config('settings')['default'];
+
+        case 'key':
+          return $request->here();
+
+        case 'compress':
+          return true;
+
+        default:
+          return false;
+      }
     } elseif (is_callable($prop)) {
       return call_user_func($prop,$request);
     } else {
