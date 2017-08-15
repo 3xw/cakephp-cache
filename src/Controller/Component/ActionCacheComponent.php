@@ -3,6 +3,7 @@ namespace Awallef\Cache\Controller\Component;
 
 use Awallef\Cache\Middleware\ResponseCacheMiddleware;
 use Cake\Cache\Cache;
+use Cake\Core\Configure;
 use Cake\Http\Response;
 use Cake\Event\Event;
 use Cake\Controller\ComponentRegistry;
@@ -15,7 +16,9 @@ class ActionCacheComponent extends Component
 {
   protected $_controller;
 
-  protected $_defaultConfig = [];
+  protected $_defaultConfig = [
+    'skip_debug' => true
+  ];
 
   public function __construct(ComponentRegistry $collection, $config = [])
   {
@@ -25,6 +28,9 @@ class ActionCacheComponent extends Component
 
   public function startup(Event $event)
   {
+    if($this->config('skip_debug') && Configure::read('debug'))
+      return true;
+
     $rcm = new ResponseCacheMiddleware();
     $response = new Response();
     if(!empty($this->_controller->request->params['_ext'])) $response->type($this->_controller->request->params['_ext']);
