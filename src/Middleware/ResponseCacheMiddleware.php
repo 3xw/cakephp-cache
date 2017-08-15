@@ -71,10 +71,10 @@ class ResponseCacheMiddleware
       if($rule['clear'] && !$rule['skip']){
         if(is_array($rule['key'])){
           foreach($rule['key'] as $key){
-            Cache::delete($key, $rule['cache']);
+            $this->_deleteCache($key, $rule);
           }
         }else{
-          Cache::delete($rule['key'], $rule['cache']);
+          $this->_deleteCache($rule['key'], $rule);
         }
       }else if(!$rule['clear'] && !$rule['skip']){
         if(is_array($rule['key'])){
@@ -86,6 +86,14 @@ class ResponseCacheMiddleware
         }
       }
     }
+  }
+
+  protected function _deleteCache($key, $rule)
+  {
+    if($key == '*')
+      return Cache::clear(false, $rule['cache']);
+
+    Cache::delete($key, $rule['cache']);
   }
 
   protected function _writeCache($key, $content, $rule)

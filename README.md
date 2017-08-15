@@ -44,7 +44,7 @@ in config folder create a cache.php file with as exemple:
 			  'cache' => 'html', // default: 'default'
 			  'skip' => false, // default: false
 			  'clear' => true, // default: false,
-			  'key' => '*',
+			  'key' => '*', // * => Cache::clear(false, cache) (Will clear all keys), 'whatEver' => Cache::delete('whatEver', cache), null => Cache::delete($request->here(), cache)
 			  'method' => ['POST','PUT','DELETE'],
 			  'code' => ['200','201','202'],
 			  'prefix' => '*',
