@@ -184,3 +184,6 @@ Configure Nginx too:
 
 ## Tip
 You've better to use different cache settings for each server side retrieve and action cache component retrieve... Otherwise Nginx/Server will serve action cache without checking any of your ACL rules!
+
+## more
+upgrades coming
