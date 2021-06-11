@@ -1,4 +1,4 @@
-<?
+<?php
 namespace Awallef\Cache\Middleware;
 
 use Cake\Cache\Cache;
