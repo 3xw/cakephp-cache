@@ -28,7 +28,7 @@ class ActionCacheComponent extends Component
 
   public function startup(Event $event)
   {
-    if($this->config('skip_debug') && Configure::read('debug'))
+    if($this->setConfig('skip_debug') && Configure::read('debug'))
       return true;
 
     $rcm = new ResponseCacheMiddleware();
